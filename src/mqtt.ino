@@ -29,31 +29,52 @@ void callback(char *topic, byte *payload, unsigned int length)
   charPayload[i] = '\0';
   String strPayload = String(charPayload);
 
-  if (strTopic.equals((String)MQTT_TOPIC + "/" + MQTT_POWER_SUBTOPIC + "/" + MQTT_COMMAND_SUBTOPIC))
+#ifdef MAGICHOME_LED_CONTROLLER
+  handleLEDpayload(strTopic, strPayload);
+#endif
+#ifdef SERVO_LOCK_CONTROL
+  handleServoPayload(strTopic, strPayload);
+#endif
+}
+
+#ifdef MAGICHOME_LED_CONTROLLER
+void handleLEDpayload(String topic, String payload)
+{
+  if (topic.equals((String)MQTT_TOPIC + "/" + MQTT_POWER_SUBTOPIC + "/" + MQTT_COMMAND_SUBTOPIC))
   {
     Serial.println("Matches power subtopic");
-    if (strPayload.equals("OFF"))
+    if (payload.equals("OFF"))
     {
       Serial.println("Lights off");
       setLedsState(false);
     }
-    else if (strPayload.equals("ON"))
+    else if (payload.equals("ON"))
     {
       Serial.println("Lights on");
       setLedsState(true);
     }
   }
-  else if (strTopic.equals((String)MQTT_TOPIC + "/" + MQTT_RGB_SUBTOPIC + "/" + MQTT_COMMAND_SUBTOPIC))
+  else if (topic.equals((String)MQTT_TOPIC + "/" + MQTT_RGB_SUBTOPIC + "/" + MQTT_COMMAND_SUBTOPIC))
   {
     Serial.println("Matches RGB subtopic");
-    uint8_t firstIndex = strPayload.indexOf(',');
-    uint8_t lastIndex = strPayload.lastIndexOf(',');
-    int R = strPayload.substring(0, firstIndex).toInt();
-    int G = strPayload.substring(firstIndex + 1, lastIndex).toInt();
-    int B = strPayload.substring(lastIndex + 1).toInt();
+    uint8_t firstIndex = payload.indexOf(',');
+    uint8_t lastIndex = payload.lastIndexOf(',');
+    int R = payload.substring(0, firstIndex).toInt();
+    int G = payload.substring(firstIndex + 1, lastIndex).toInt();
+    int B = payload.substring(lastIndex + 1).toInt();
     fadeToColor(R, G, B);
   }
 }
+#endif
+
+#ifdef SERVO_MOTOR_CONTROL
+void handleServoPayload(String topic, String payload)
+{
+  if (topic.equals((String)MQTT_TOPIC + "/" + MQTT_POWER_SUBTOPIC + "/" + MQTT_COMMAND_SUBTOPIC))
+  {
+  }
+}
+#endif
 
 WiFiClient espClient;
 PubSubClient client(espClient);

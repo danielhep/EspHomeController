@@ -1,3 +1,5 @@
+#ifdef MAGICHOME_LED_CONTROLLER
+
 #include <VaRGB.h>
 #include <VaRGBCurves.h>
 #include <Ticker.h>
@@ -119,3 +121,5 @@ unsigned int getLoopDelay()
 {
   return RGB_prog.tickDelayTimeMs();
 }
+
+#endif
