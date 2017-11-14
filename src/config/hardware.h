@@ -1,0 +1,33 @@
+#if defined(MAGICHOME_LED_CONTROLLER)
+
+// Info
+#define MANUFACTURER "MAGICHOME"
+#define DEVICE "LED_CONTROLLER"
+#define RELAY_PROVIDER RELAY_PROVIDER_LIGHT
+#define LIGHT_PROVIDER LIGHT_PROVIDER_DIMMER
+#define DUMMY_RELAY_COUNT 1
+
+// LEDs
+#define LED1_PIN 2
+#define LED1_PIN_INVERSE 1
+
+// Channels
+#define LIGHT_CH1_PIN 5  // RED
+#define LIGHT_CH2_PIN 14 // GREEN
+#define LIGHT_CH3_PIN 12 // BLUE
+#define LIGHT_CH4_PIN 13 // WHITE
+
+#define LIGHT_CH1_INVERSE 0
+#define LIGHT_CH2_INVERSE 0
+#define LIGHT_CH3_INVERSE 0
+#define LIGHT_CH4_INVERSE 0
+
+#endif
+
+#if defined(SERVO_LOCK_CONTROL)
+
+#define SERVO_PIN D3
+#define LOCK_POS 70
+#define UNLOCK_POS 155
+
+#endif
